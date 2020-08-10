@@ -12,7 +12,7 @@ VERDE = (0, 255, 0)
 
 #Definimos eltamaño de la pantalla
 
-pantalla = pygame.display.set_mode([400, 400])
+pantalla = pygame.display.set_mode([800, 800])
 
 #Definimos el fondo
 
@@ -36,7 +36,8 @@ hecho = False
 class Personaje(pygame.sprite.Sprite):
     def __init__(self, personaje_x, personaje_y):
         super().__init__()
-        self.bucle_anim = 0
+        self.bucle_anim_izq = 0
+        self.bucle_anim_der = 0
         self.movimiento = 0
         self.image = pygame.image.load("stand.bmp").convert()
         self.image.set_colorkey(BLANCO)
@@ -46,27 +47,68 @@ class Personaje(pygame.sprite.Sprite):
         self.rect.x = personaje_x
         self.rect.y = personaje_y
 
+    #La sección update se va a actualizar en cada leída de código. Por ende, acá van los cambios de sprite.
+    
     def update(self):
-        if self.bucle_anim == 1:
+        #Bucle de animación de caminar a la izquierda
+        if self.bucle_anim_izq == 1:
             self.movimiento += 1
             if self.movimiento == 1:
                 self.image = pygame.image.load("main-walk-1.bmp").convert()
+                self.image.set_colorkey(BLANCO)
             elif self.movimiento == 2:
                 self.image = pygame.image.load("main-walk-2.bmp").convert()
+                self.image.set_colorkey(BLANCO)
             elif self.movimiento == 3:
                 self.image = pygame.image.load("main-walk-3.bmp").convert()
+                self.image.set_colorkey(BLANCO)
             elif self.movimiento == 4:
                 self.image = pygame.image.load("main-walk-4.bmp").convert()
+                self.image.set_colorkey(BLANCO)
             elif self.movimiento == 5:
                 self.image = pygame.image.load("main-walk-5.bmp").convert()
+                self.image.set_colorkey(BLANCO)
             elif self.movimiento == 6:
                 self.image = pygame.image.load("main-walk-6.bmp").convert()
+                self.image.set_colorkey(BLANCO)
             elif self.movimiento == 7:
                 self.image = pygame.image.load("main-walk-7.bmp").convert()
+                self.image.set_colorkey(BLANCO)
             else:
                 self.movimiento = 1
-        else:
+        
+            
+
+        #Bucle de animación de caminar a la derecha 
+        if self.bucle_anim_der == 1:
+            self.movimiento += 1
+            if self.movimiento == 1:
+                self.image = pygame.image.load("main-walk-right-1.bmp").convert()
+                self.image.set_colorkey(BLANCO)
+            elif self.movimiento == 2:
+                self.image = pygame.image.load("main-walk-right-2.bmp").convert()
+                self.image.set_colorkey(BLANCO)
+            elif self.movimiento == 3:
+                self.image = pygame.image.load("main-walk-right-3.bmp").convert()
+                self.image.set_colorkey(BLANCO)
+            elif self.movimiento == 4:
+                self.image = pygame.image.load("main-walk-right-4.bmp").convert()
+                self.image.set_colorkey(BLANCO)
+            elif self.movimiento == 5:
+                self.image = pygame.image.load("main-walk-right-5.bmp").convert()
+                self.image.set_colorkey(BLANCO)
+            elif self.movimiento == 6:
+                self.image = pygame.image.load("main-walk-right-6.bmp").convert()
+                self.image.set_colorkey(BLANCO)
+            elif self.movimiento == 7:
+                self.image = pygame.image.load("main-walk-right-7.bmp").convert()
+                self.image.set_colorkey(BLANCO)
+            else:
+                self.movimiento = 1
+        
+        if self.bucle_anim_der and self.bucle_anim_izq == 0:
             self.image = pygame.image.load("stand.bmp").convert()
+            self.image.set_colorkey(BLANCO)
 
         
 
@@ -91,9 +133,12 @@ while not hecho:
         if evento.type == pygame.KEYDOWN:
             if evento.key == pygame.K_RIGHT:
                 offset_x = -1
+                protagonista.bucle_anim_der = 1
+                protagonista.bucle_anim_izq = 0
             if evento.key == pygame.K_LEFT:
                 offset_x = 1
-                protagonista.bucle_anim +=1
+                protagonista.bucle_anim_der = 0
+                protagonista.bucle_anim_izq = 1
             if evento.key == pygame.K_DOWN:
                 offset_y = -1
             if evento.key == pygame.K_UP:
@@ -101,7 +146,11 @@ while not hecho:
         if evento.type == pygame.KEYUP:
             offset_x = 0
             offset_y = 0
-            protagonista.bucle_anim = 0
+            protagonista.bucle_anim_izq = 0
+            protagonista.bucle_anim_der = 0
+            protagonista.movimiento = 0
+
+
 
 #Definimos el offset del movimiento de la pantalla definido anteriormente.
 
@@ -118,6 +167,6 @@ while not hecho:
 
     pygame.display.flip()
 
-    reloj.tick(60)
+    reloj.tick(30)
 
 pygame.quit()
