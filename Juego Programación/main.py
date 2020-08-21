@@ -38,6 +38,8 @@ class Personaje(pygame.sprite.Sprite):
         super().__init__()
         self.bucle_anim_izq = 0
         self.bucle_anim_der = 0
+        self.bucle_anim_up = 0
+        self.bucle_anim_down = 0
         self.movimiento = 0
         self.image = pygame.image.load("stand.bmp").convert()
         self.image.set_colorkey(BLANCO)
@@ -105,8 +107,47 @@ class Personaje(pygame.sprite.Sprite):
                 self.image.set_colorkey(BLANCO)
             else:
                 self.movimiento = 1
+
+        #Bucle de animación de caminar hacia arriba
+        if self.bucle_anim_up == 1:
+            self.movimiento += 1
+            print(self.movimiento)
+            if self.movimiento == 1:
+                self.image = pygame.image.load("walk_up_1.bmp").convert()
+                self.image.set_colorkey(BLANCO)
+            elif self.movimiento == 2:
+                self.image = pygame.image.load("walk_up_2.bmp").convert()
+                self.image.set_colorkey(BLANCO)
+            elif self.movimiento == 3:
+                self.image = pygame.image.load("walk_up_3.bmp").convert()
+                self.image.set_colorkey(BLANCO)
+            elif self.movimiento == 4:
+                self.image = pygame.image.load("walk_up_4.bmp").convert()
+                self.image.set_colorkey(BLANCO)
+            else:
+                self.movimiento = 1
+
+        #Bucle de animación para caminar hacia abajo
+        if self.bucle_anim_down == 1:
+            self.movimiento += 1
+            print(self.movimiento)
+            if self.movimiento == 1:
+                self.image = pygame.image.load("walk_down_1.bmp").convert()
+                self.image.set_colorkey(BLANCO)
+            elif self.movimiento == 2:
+                self.image = pygame.image.load("walk_down_2.bmp").convert()
+                self.image.set_colorkey(BLANCO)
+            elif self.movimiento == 3:
+                self.image = pygame.image.load("walk_down_3.bmp").convert()
+                self.image.set_colorkey(BLANCO)
+            elif self.movimiento == 4:
+                self.image = pygame.image.load("walk_down_4.bmp").convert()
+                self.image.set_colorkey(BLANCO)
+            else:
+                self.movimiento = 1
+
         
-        if self.bucle_anim_der and self.bucle_anim_izq == 0:
+        if self.bucle_anim_der == 0 and self.bucle_anim_izq == 0 and self.bucle_anim_up == 0 and self.bucle_anim_down == 0:
             self.image = pygame.image.load("stand.bmp").convert()
             self.image.set_colorkey(BLANCO)
 
@@ -135,19 +176,33 @@ while not hecho:
                 offset_x = -1
                 protagonista.bucle_anim_der = 1
                 protagonista.bucle_anim_izq = 0
+                protagonista.bucle_anim_up = 0
+                protagonista.bucle_anim_down = 0
             if evento.key == pygame.K_LEFT:
                 offset_x = 1
                 protagonista.bucle_anim_der = 0
                 protagonista.bucle_anim_izq = 1
+                protagonista.bucle_anim_up = 0
+                protagonista.bucle_anim_down = 0
             if evento.key == pygame.K_DOWN:
                 offset_y = -1
+                protagonista.bucle_anim_der = 0
+                protagonista.bucle_anim_izq = 0
+                protagonista.bucle_anim_up = 0
+                protagonista.bucle_anim_down = 1
             if evento.key == pygame.K_UP:
                 offset_y = 1
+                protagonista.bucle_anim_der = 0
+                protagonista.bucle_anim_izq = 0
+                protagonista.bucle_anim_up = 1
+                protagonista.bucle_anim_down = 0
         if evento.type == pygame.KEYUP:
             offset_x = 0
             offset_y = 0
             protagonista.bucle_anim_izq = 0
             protagonista.bucle_anim_der = 0
+            protagonista.bucle_anim_up = 0
+            protagonista.bucle_anim_down = 0
             protagonista.movimiento = 0
 
 
