@@ -26,6 +26,7 @@ offset_x = 0
 y = 0
 offset_y = 0
 
+
 #Definimos el reloj
 
 reloj = pygame.time.Clock()
@@ -151,6 +152,7 @@ class Personaje(pygame.sprite.Sprite):
             self.image = pygame.image.load("stand.bmp").convert()
             self.image.set_colorkey(BLANCO)
 
+
 #Creamos la clase Árbol
 class Arbol(pygame.sprite.Sprite):
     def __init__(self, arbol_x, arbol_y):
@@ -162,59 +164,69 @@ class Arbol(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = arbol_x
         self.rect.y = arbol_y
-    
-#   def update(self):
-        self.arbol_x += offset_x
-        self.arbol_y += offset_y
-
-
+        self.random_x = random.randrange(200,800)
+        self.random_y = random.randrange(200,800)
 
 
 #Creamos un objeto protagonista de la clase del personaje.
 
 protagonista = Personaje(350,400)
 
-#Creamos los árboles
 
-arbol = Arbol(x+200, y+200)
 
 
 
 #Añadimos los sprites a las listas correspondientes.
 
+arbol_lista = pygame.sprite.Group()
 lista_personaje = pygame.sprite.Group()
 lista_personaje.add(protagonista)
 listade_todoslos_sprites = pygame.sprite.Group()
 listade_todoslos_sprites.add(protagonista)
-listade_todoslos_sprites.add(arbol)
+
+
+
+
+#Creamos los árboles
+for i in range(random.randrange(5,30)):
+    # Esto representa un arbol
+    arbol = Arbol(x, y)
+  
+    # Establece una ubicación aleatoria para el arbol
+    arbol.rect.x = random.randrange(800)
+    arbol.rect.y = random.randrange(800)
+      
+    # Añade el arbol a la lista de objetos
+    
+    arbol_lista.add(arbol)
+    listade_todoslos_sprites.add(arbol)
 
 #En un bucle infinito configuramos las teclas.
-
 while not hecho:
     for evento in pygame.event.get():
         if evento.type == pygame.QUIT:
             hecho = True
         if evento.type == pygame.KEYDOWN:
             if evento.key == pygame.K_RIGHT:
-                offset_x = -1
+                offset_x = -4
                 protagonista.bucle_anim_der = 1
                 protagonista.bucle_anim_izq = 0
                 protagonista.bucle_anim_up = 0
                 protagonista.bucle_anim_down = 0
             if evento.key == pygame.K_LEFT:
-                offset_x = 1
+                offset_x = 4
                 protagonista.bucle_anim_der = 0
                 protagonista.bucle_anim_izq = 1
                 protagonista.bucle_anim_up = 0
                 protagonista.bucle_anim_down = 0
             if evento.key == pygame.K_DOWN:
-                offset_y = -1
+                offset_y = -4
                 protagonista.bucle_anim_der = 0
                 protagonista.bucle_anim_izq = 0
                 protagonista.bucle_anim_up = 0
                 protagonista.bucle_anim_down = 1
             if evento.key == pygame.K_UP:
-                offset_y = 1
+                offset_y = 4
                 protagonista.bucle_anim_der = 0
                 protagonista.bucle_anim_izq = 0
                 protagonista.bucle_anim_up = 1
@@ -244,7 +256,8 @@ while not hecho:
 
     # Copia la imagen en pantalla:
     pantalla.blit(imagen_de_fondo, [x, y])
-    arbol.rect = [x, y]
+    for arbol in arbol_lista:
+        arbol.rect = [x+arbol.random_x, y+arbol.random_y]
     
     listade_todoslos_sprites.update()
 
