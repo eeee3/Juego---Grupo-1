@@ -81,8 +81,6 @@ class Personaje(pygame.sprite.Sprite):
                 self.image.set_colorkey(BLANCO)
             else:
                 self.movimiento = 1
-        
-            
 
         #Bucle de animación de caminar a la derecha 
         if self.bucle_anim_der == 1:
@@ -147,10 +145,11 @@ class Personaje(pygame.sprite.Sprite):
             else:
                 self.movimiento = 1
 
-        
         if self.bucle_anim_der == 0 and self.bucle_anim_izq == 0 and self.bucle_anim_up == 0 and self.bucle_anim_down == 0:
             self.image = pygame.image.load("stand.bmp").convert()
             self.image.set_colorkey(BLANCO)
+
+
 
 
 #Creamos la clase Árbol
@@ -159,47 +158,39 @@ class Arbol(pygame.sprite.Sprite):
         super().__init__()
         self.image = pygame.image.load("arbol.bmp").convert()
         self.image.set_colorkey(BLANCO)
-        self.arbol_x = 450
-        self.arbol_y = 450
         self.rect = self.image.get_rect()
-        self.rect.x = arbol_x
-        self.rect.y = arbol_y
-        self.random_x = random.randrange(200,800)
-        self.random_y = random.randrange(200,800)
+        self.rect.x = random.randrange(-200,800)
+        self.rect.y = random.randrange(-200,0)
+        self.offset_x = 0
+        self.offset_y = 0
 
-
-#Creamos un objeto protagonista de la clase del personaje.
-
-protagonista = Personaje(350,400)
-
-
-
-
+    def update(self):
+        self.rect.x += offset_x
+        self.rect.y += offset_y
 
 #Añadimos los sprites a las listas correspondientes.
-
 arbol_lista = pygame.sprite.Group()
-lista_personaje = pygame.sprite.Group()
-lista_personaje.add(protagonista)
 listade_todoslos_sprites = pygame.sprite.Group()
-listade_todoslos_sprites.add(protagonista)
-
-
-
+lista_colisionables = pygame.sprite.Group()
 
 #Creamos los árboles
 for i in range(random.randrange(5,30)):
     # Esto representa un arbol
     arbol = Arbol(x, y)
-  
+
     # Establece una ubicación aleatoria para el arbol
     arbol.rect.x = random.randrange(800)
     arbol.rect.y = random.randrange(800)
-      
+
     # Añade el arbol a la lista de objetos
-    
+
     arbol_lista.add(arbol)
+    lista_colisionables.add(arbol)
     listade_todoslos_sprites.add(arbol)
+
+#Creamos un objeto protagonista de la clase del personaje.
+protagonista = Personaje(350,400)
+listade_todoslos_sprites.add(protagonista)
 
 #En un bucle infinito configuramos las teclas.
 while not hecho:
@@ -252,17 +243,23 @@ while not hecho:
     if y >= 215 or y <= -400:
         offset_y = 0
 
-
-
-    # Copia la imagen en pantalla:
-    pantalla.blit(imagen_de_fondo, [x, y])
     for arbol in arbol_lista:
-        arbol.rect = [x+arbol.random_x, y+arbol.random_y]
+        arbol.offset_x = offset_x
+        arbol.offset_y = offset_y
     
     listade_todoslos_sprites.update()
 
-    listade_todoslos_sprites.draw(pantalla)
-    
+    #Definimos las colisiones
+    # Observamos si el bloque protagonista ha colisionado con algo.
+    lista_impactos_bloques = pygame.sprite.spritecollide(protagonista, arbol_lista, False)  
+    #Verificador de impacto
+    if len(lista_impactos_bloques) > 0:
+        offset_x = 0
+        offset_y = 0
+    # Copia la imagen en pantalla:
+    pantalla.blit(imagen_de_fondo, [x, y])
+
+    listade_todoslos_sprites.draw(pantalla)  
 
     pygame.display.flip()
 
