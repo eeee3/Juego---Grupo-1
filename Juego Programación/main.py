@@ -160,7 +160,7 @@ class Arbol(pygame.sprite.Sprite):
         self.image.set_colorkey(BLANCO)
         self.rect = self.image.get_rect()
         self.rect.x = random.randrange(-200,800)
-        self.rect.y = random.randrange(-200,0)
+        self.rect.y = random.randrange(-400,0)
         self.offset_x = 0
         self.offset_y = 0
 
@@ -174,13 +174,13 @@ listade_todoslos_sprites = pygame.sprite.Group()
 lista_colisionables = pygame.sprite.Group()
 
 #Creamos los árboles
-for i in range(random.randrange(5,30)):
+for i in range(random.randrange(2,10)):
     # Esto representa un arbol
     arbol = Arbol(x, y)
 
     # Establece una ubicación aleatoria para el arbol
-    arbol.rect.x = random.randrange(800)
-    arbol.rect.y = random.randrange(800)
+    arbol.rect.x = random.randrange(300)
+    arbol.rect.y = random.randrange(300)
 
     # Añade el arbol a la lista de objetos
 
@@ -189,7 +189,7 @@ for i in range(random.randrange(5,30)):
     listade_todoslos_sprites.add(arbol)
 
 #Creamos un objeto protagonista de la clase del personaje.
-protagonista = Personaje(350,400)
+protagonista = Personaje(400,400)
 listade_todoslos_sprites.add(protagonista)
 
 #En un bucle infinito configuramos las teclas.
