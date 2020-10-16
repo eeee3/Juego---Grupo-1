@@ -39,20 +39,34 @@ hecho = False
 class Personaje(pygame.sprite.Sprite):
     def __init__(self, personaje_x, personaje_y):
         super().__init__()
+        self.variable_arma = 0
+
         self.bucle_anim_izq = 0
         self.bucle_anim_der = 0
         self.bucle_anim_up = 0
         self.bucle_anim_down = 0
+
         self.attack_up_token = 0
         self.attack_down_token = 0
         self.attack_left_token = 0
         self.attack_right_token = 0
+
+        self.arco_up_token = 0
+        self.arco_down_token = 0
+        self.arco_left_token = 0
+        self.arco_right_token = 0
+
         self.ataque_bucle = 0
+        self.ataque_arco = 0
+
         self.movimiento = 0
+
         self.image = pygame.image.load("stand.bmp").convert()
         self.image.set_colorkey(BLANCO)
+
         self.personaje_x = 0
         self.personaje_y = 0
+
         self.rect = self.image.get_rect()
         self.rect.x = personaje_x
         self.rect.y = personaje_y
@@ -206,6 +220,7 @@ class Personaje(pygame.sprite.Sprite):
 
         if self.attack_right_token == 1:
             self.ataque_bucle += 1
+            print(self.ataque_bucle)
             if self.ataque_bucle == 1:
                 self.image = pygame.image.load("attack-1-right.bmp").convert()
                 self.image.set_colorkey(BLANCO)
@@ -238,6 +253,40 @@ class Personaje(pygame.sprite.Sprite):
             else:
                 self.ataque_bucle = 0
 
+        if self.arco_left_token == 1:
+            self.ataque_arco += 1
+            if self.ataque_arco == 1:
+                self.image = pygame.image.load("arco-iz-1.bmp").convert()
+                self.image.set_colorkey(BLANCO)
+            elif self.ataque_arco == 2:
+                self.image = pygame.image.load("arco-iz-2.bmp").convert()
+                self.image.set_colorkey(BLANCO)
+            elif self.ataque_arco == 3:
+                self.image = pygame.image.load("arco-iz-3.bmp").convert()
+                self.image.set_colorkey(BLANCO)
+            elif self.ataque_arco == 4:
+                self.image = pygame.image.load("arco-iz-4.bmp").convert()
+                self.image.set_colorkey(BLANCO)
+            else: 
+                self.ataque_arco = 1
+
+        if self.arco_right_token == 1:
+            self.ataque_arco += 1
+            print(self.ataque_arco)
+            if self.ataque_arco == 1:
+                self.image = pygame.image.load("arco-der-1.bmp").convert()
+                self.image.set_colorkey(BLANCO)
+            elif self.ataque_arco == 2:
+                self.image = pygame.image.load("arco-der-2.bmp").convert()
+                self.image.set_colorkey(BLANCO)
+            elif self.ataque_arco == 3:
+                self.image = pygame.image.load("arco-der-3.bmp").convert()
+                self.image.set_colorkey(BLANCO)
+            elif self.ataque_arco == 4:
+                self.image = pygame.image.load("arco-der-4.bmp").convert()
+                self.image.set_colorkey(BLANCO)
+            else: 
+                self.ataque_arco = 1
 
         if self.bucle_anim_der == 0 and self.bucle_anim_izq == 0 and self.bucle_anim_up == 0 and self.bucle_anim_down == 0 and self.attack_up_token == 0 and self.attack_down_token == 0 and self.attack_right_token == 0 and self.attack_left_token == 0:
             self.image = pygame.image.load("stand.bmp").convert()
@@ -326,25 +375,54 @@ while not hecho:
                 protagonista.bucle_anim_up = 1
                 protagonista.bucle_anim_down = 0
             if evento.key == pygame.K_w:
-                protagonista.attack_up_token = 1
-                protagonista.attack_down_token = 0
-                protagonista.attack_left_token = 0
-                protagonista.attack_right_token = 0
+                if protagonista.variable_arma == 0:
+                    protagonista.attack_up_token = 1
+                    protagonista.attack_down_token = 0
+                    protagonista.attack_left_token = 0
+                    protagonista.attack_right_token = 0
+                if protagonista.variable_arma == 1:
+                    protagonista.arco_up_token = 1
+                    protagonista.arco_down_token = 0
+                    protagonista.arco_left_token = 0
+                    protagonista.arco_right_token = 0
             if evento.key == pygame.K_a:
-                protagonista.attack_up_token = 0
-                protagonista.attack_down_token = 0
-                protagonista.attack_left_token = 1
-                protagonista.attack_right_token = 0
+                if protagonista.variable_arma == 0:
+                    protagonista.attack_up_token = 0
+                    protagonista.attack_down_token = 0
+                    protagonista.attack_left_token = 1
+                    protagonista.attack_right_token = 0
+                if protagonista.variable_arma == 1:
+                    protagonista.arco_up_token = 0
+                    protagonista.arco_down_token = 0
+                    protagonista.arco_left_token = 1
+                    protagonista.arco_right_token = 0
             if evento.key == pygame.K_d:
-                protagonista.attack_up_token = 0
-                protagonista.attack_down_token = 0
-                protagonista.attack_left_token = 0
-                protagonista.attack_right_token = 1
+                if protagonista.variable_arma == 0:
+                    protagonista.attack_up_token = 0
+                    protagonista.attack_down_token = 0
+                    protagonista.attack_left_token = 0
+                    protagonista.attack_right_token = 1
+                if protagonista.variable_arma == 1:
+                    protagonista.arco_up_token = 0
+                    protagonista.arco_down_token = 0
+                    protagonista.arco_left_token = 0
+                    protagonista.arco_right_token = 1
             if evento.key == pygame.K_s:
-                protagonista.attack_up_token = 0
-                protagonista.attack_down_token = 1
-                protagonista.attack_left_token = 0
-                protagonista.attack_right_token = 0
+                if protagonista.variable_arma == 0:
+                    protagonista.attack_up_token = 0
+                    protagonista.attack_down_token = 1
+                    protagonista.attack_left_token = 0
+                    protagonista.attack_right_token = 0
+                if protagonista.variable_arma == 1:
+                    protagonista.arco_up_token = 0
+                    protagonista.arco_down_token = 1
+                    protagonista.arco_left_token = 0
+                    protagonista.arco_right_token = 0
+            if evento.key == pygame.K_z:
+                if protagonista.variable_arma == 0:
+                    protagonista.variable_arma += 1
+                else:
+                    protagonista.variable_arma = 0
 
         if evento.type == pygame.KEYUP:
             offset_x = 0
@@ -357,6 +435,10 @@ while not hecho:
             protagonista.attack_down_token = 0
             protagonista.attack_left_token = 0
             protagonista.attack_right_token = 0
+            protagonista.arco_up_token = 0
+            protagonista.arco_down_token = 0
+            protagonista.arco_left_token = 0
+            protagonista.arco_right_token = 0
             protagonista.movimiento = 0
 
 
